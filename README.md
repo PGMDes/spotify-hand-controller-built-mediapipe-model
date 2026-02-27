@@ -1,281 +1,318 @@
 # Hand Gesture Recognition Model
 
+Một pipeline machine learning hoàn chỉnh để xây dựng mô hình nhận diện cử chỉ tay tùy chỉnh (tương tự MediaPipe) và ứng dụng để điều khiển Spotify.
+
 A complete machine learning pipeline for building a custom hand detection and gesture recognition model (similar to MediaPipe) and applying it to control Spotify playback.
 
-## 🎯 Project Goals
+## Mục tiêu dự án
 
-This project demonstrates the full ML workflow:
-1. **Data Collection**: Gather hand gesture data from webcam
-2. **Model Development**: Build and train a custom hand detection model
-3. **Model Training**: Train the model on collected data
-4. **Application**: Deploy the model in a real-world application (Spotify controller)
+Dự án này minh họa quy trình ML workflow đầy đủ từ A đến Z:
 
-## 📁 Project Structure
+1. **Phase 1 - Data Collection**: Thu thập dữ liệu cử chỉ tay
+2. **Phase 2 - Model Development**: Xây dựng và huấn luyện mô hình
+3. **Phase 3 - Application**: Triển khai mô hình vào ứng dụng thực tế
+
+## Cấu trúc dự án
+
+## Cấu trúc dự án
 
 ```
-hand-gesture-model/
+spotify-hand-controller-built-mediapipe-model/
 │
-├── 1-data-collection/         # Phase 1: Data Collection
-│   ├── collect_data.py       # Collect hand gesture images
-│   ├── annotate_data.py      # Annotate data with landmarks
-│   └── README.md             # Data collection guide
+├── 1-data-collection/         # Phase 1: Thu thập dữ liệu
+│   └── README.md             # Hướng dẫn thu thập và annotation
 │
-├── data/                      # Dataset storage
-│   ├── raw/                  # Raw collected images
-│   ├── processed/            # Preprocessed data ready for training
-│   ├── annotations/          # Annotated landmark data
-│   └── kaggle_data_link.md   # External dataset links
+├── data/                      # Lưu trữ dataset
+│   ├── raw/                  # Dữ liệu thô chưa xử lý
+│   ├── processed/            # Dữ liệu đã tiền xử lý
+│   ├── annotations/          # File chú thích landmarks
+│   └── kaggle_data_link.md   # Links tới external datasets
 │
-├── 2-model-development/       # Phase 2: Model Building & Training
-│   ├── model_architecture.py # Neural network architecture
-│   ├── train.py              # Model training script
-│   ├── evaluate.py           # Model evaluation script
-│   ├── data_preprocessing.py # Data preprocessing utilities
-│   └── README.md             # Model development guide
+├── 2-model-development/       # Phase 2: Phát triển mô hình
+│   ├── train.py              # Script huấn luyện
+│   ├── evaluate.py           # Script đánh giá
+│   ├── utils.py              # Utility functions
+│   └── README.md             # Hướng dẫn training
 │
-├── models/                    # Trained models
-│   ├── saved_models/         # Final trained models
+├── models/                    # Lưu trữ models
+│   ├── saved_models/         # Models đã train xong
 │   └── checkpoints/          # Training checkpoints
 │
-├── 3-application/             # Phase 3: Real-world Application
-│   ├── main.py               # Main application entry point
-│   ├── hand_detector.py      # Hand detection using trained model
+├── 3-application/             # Phase 3: Ứng dụng thực tế
+│   ├── main.py               # Entry point
+│   ├── hand_detector.py      # Hand detection module
 │   ├── spotify_controller.py # Spotify API integration
-│   ├── gesture_mapping.py    # Gesture to action mapping
-│   ├── utils.py              # Application utilities
-│   └── README.md             # Application usage guide
+│   ├── gesture_mapping.py    # Gesture mapping logic
+│   ├── utils.py              # Helper functions
+│   └── README.md             # Hướng dẫn sử dụng
 │
-├── notebooks/                 # Jupyter notebooks for experimentation
+├── notebooks/                 # Jupyter notebooks cho research
 │
-├── tests/                     # Unit tests
+├── tests/                     # Unit và integration tests
 │   ├── test_hand_detector.py
 │   └── test_spotify_controller.py
 │
 ├── config/                    # Configuration files
-│   ├── config.py             # Main configuration
-│   └── config.example.py     # Example configuration
+│   ├── config.py             # Main config (không commit)
+│   └── config.example.py     # Template config
 │
-├── assets/                    # Images, icons, and other assets
+├── assets/                    # Images, diagrams, media files
 │
-├── docs/                      # Additional documentation
+├── docs/                      # Documentation bổ sung
+│   └── README.md
+│
+├── .github/                   # GitHub templates
+│   ├── ISSUE_TEMPLATE/
+│   └── PULL_REQUEST_TEMPLATE.md
 │
 ├── requirements.txt           # Python dependencies
-└── README.md                 # This file
+├── .gitignore                # Git ignore rules
+├── README.md                 # File này
+├── CODE_OF_CONDUCT.md        # Quy tắc ứng xử
+├── CONTRIBUTING.md           # Hướng dẫn đóng góp
+└── QUICKSTART.md             # Quick start guide
 ```
 
-## 🚀 Quick Start
+## Quy trình làm việc
 
-### Phase 1: Data Collection
+### Phase 1: Thu thập dữ liệu
 ```bash
 cd 1-data-collection
-python collect_data.py      # Collect hand gesture images
-python annotate_data.py     # Annotate with landmarks
+# Đọc README.md để hiểu cách thu thập và annotation dữ liệu
+# Implement các scripts theo nhu cầu của bạn
 ```
 
-### Phase 2: Model Development
+**Mục tiêu**: Thu thập dataset cho các cử chỉ tay khác nhau
+
+**Output**: Dữ liệu raw và annotations trong thư mục `data/`
+
+### Phase 2: Phát triển mô hình
 ```bash
 cd 2-model-development
-python data_preprocessing.py   # Preprocess data
-python train.py               # Train the model
-python evaluate.py            # Evaluate performance
+# Đọc README.md để hiểu kiến trúc mô hình
+# Implement training pipeline
+python train.py               # Khi đã implement
+python evaluate.py            # Đánh giá model
 ```
 
-### Phase 3: Application
+**Mục tiêu**: Xây dựng và train model nhận diện cử chỉ tay
+
+**Output**: Trained model trong `models/saved_models/`
+
+### Phase 3: Ứng dụng
 ```bash
 cd 3-application
-python main.py               # Run Spotify controller
+# Đọc README.md để hiểu cách tích hợp
+# Setup Spotify API credentials
+python main.py               # Khi đã implement
 ```
 
-See individual README files in each phase directory for detailed instructions.
+**Mục tiêu**: Sử dụng model để điều khiển Spotify
 
-## 📋 Prerequisites
+**Output**: Ứng dụng real-time gesture control
 
-- Python 3.8+
-- Webcam for data collection and real-time detection
-- Spotify Premium account (for Phase 3 application)
-- GPU recommended for faster training (optional)
+## Yêu cầu hệ thống
 
-## 🔧 Installation
+### Phần cứng
+- Webcam (tích hợp hoặc external)
+- CPU: Intel i5/AMD Ryzen 5 trở lên
+- RAM: 8GB minimum, 16GB khuyến nghị
+- GPU: Khuyến nghị có NVIDIA GPU cho training (không bắt buộc)
 
-1. **Clone the repository**
+### Phần mềm
+- Python 3.8 hoặc cao hơn
+- pip hoặc conda
+- Git
+- Spotify Premium account (cho Phase 3)
+
+## Cài đặt
+
+### 1. Clone repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/YOUR_USERNAME/spotify-hand-controller-built-mediapipe-model.git
 cd spotify-hand-controller-built-mediapipe-model
 ```
 
-2. **Install dependencies**
+### 2. Tạo virtual environment
+```bash
+python -m venv venv
+
+# Kích hoạt environment
+# Trên macOS/Linux:
+source venv/bin/activate
+# Trên Windows:
+venv\Scripts\activate
+```
+
+### 3. Cài đặt dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-3. **Configure Spotify API** (for Phase 3)
+### 4. Cấu hình (cho Phase 3)
 ```bash
 cp config/config.example.py config/config.py
-# Edit config/config.py with your Spotify API credentials
+# Chỉnh sửa config.py với Spotify API credentials
 ```
 
-Get Spotify API credentials:
-- Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-- Create a new app
-- Copy Client ID and Client Secret to config.py
+## Spotify API Setup
 
-## 📚 Complete Workflow
+Để sử dụng Phase 3, bạn cần Spotify API credentials:
 
-### Phase 1: Data Collection
-Collect your own hand gesture dataset:
+1. Truy cập [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+2. Tạo ứng dụng mới
+3. Lấy Client ID và Client Secret
+4. Thêm redirect URI: `http://localhost:8888/callback`
+5. Cập nhật thông tin trong `config/config.py`
 
-```bash
-cd 1-data-collection
+## Gesture Mappings
 
-# Step 1: Collect images
-python collect_data.py
-# Follow on-screen instructions to record gestures
+Các cử chỉ mặc định và actions tương ứng:
 
-# Step 2: Annotate landmarks
-python annotate_data.py
-# Extracts hand landmarks using MediaPipe
-```
+| Cử chỉ | Hành động Spotify |
+|--------|-------------------|
+| Open Palm | Play/Pause |
+| Fist | Stop |
+| Thumbs Up | Tăng volume |
+| Peace Sign | Next track |
+| Pointing | Previous track |
+| Swipe Left | Tua lùi |
+| Swipe Right | Tua tới |
 
-**Output**: Annotated data in `data/annotations/`
+*Có thể tùy chỉnh trong Phase 3*
 
-### Phase 2: Model Development & Training
-Build and train your custom model:
+## Kiến trúc mô hình
 
-```bash
-cd 2-model-development
+Mô hình bao gồm 3 components chính:
 
-# Step 1: Preprocess data
-python data_preprocessing.py
-# Creates train/val/test splits with augmentation
+### 1. Hand Detection Network
+- Detect vị trí bàn tay trong frame
+- Output: Bounding box coordinates
 
-# Step 2: Train model
-python train.py --epochs 100 --batch-size 32
+### 2. Hand Landmark Network
+- Predict 21 điểm mốc 3D trên bàn tay
+- Output: (x, y, z) coordinates cho mỗi landmark
 
-# Step 3: Evaluate model
-python evaluate.py --model-path ../models/saved_models/best_model.h5
-```
+### 3. Gesture Classification Network
+- Phân loại cử chỉ từ landmarks
+- Output: Gesture class và confidence score
 
-**Output**: Trained model in `models/saved_models/`
+## Performance Targets
 
-### Phase 3: Application (Spotify Controller)
-Use your trained model to control Spotify:
+### Accuracy
+- Hand Detection: mAP > 0.95
+- Landmark Prediction: Mean error < 5 pixels
+- Gesture Classification: Accuracy > 95%
 
-```bash
-cd 3-application
+### Speed
+- Inference time: < 33ms (>30 FPS)
+- Model size: < 50MB
+- Latency: < 100ms end-to-end
 
-# Run the application
-python main.py --model-path ../models/saved_models/best_model.h5
-```
+## Documentation
 
-**Default Gesture Mappings**:
-- 🖐️ **Open Palm**: Play/Pause
-- ✊ **Fist**: Stop
-- 👍 **Thumbs Up**: Volume Up
-- ✌️ **Peace Sign**: Next Track
-- 👈 **Pointing**: Previous Track
-- ← **Swipe Left**: Seek Backward
-- → **Swipe Right**: Seek Forward
+Mỗi phase có documentation chi tiết:
 
-Customize mappings in [3-application/gesture_mapping.py](3-application/gesture_mapping.py)
-
-## 🎓 Learning Path
-
-This project is designed to teach the complete ML pipeline:
-
-1. **Data Engineering**: Learn data collection, annotation, and preprocessing
-2. **Model Architecture**: Understand CNN architectures for computer vision
-3. **Training Pipeline**: Implement training loops, checkpointing, and evaluation
-4. **Model Deployment**: Deploy ML models in real-time applications
-5. **API Integration**: Integrate with external APIs (Spotify)
-
-## 🧪 Testing
-
-Run tests to verify components:
-
-```bash
-# Test all components
-pytest tests/
-
-# Test specific component
-pytest tests/test_hand_detector.py
-pytest tests/test_spotify_controller.py
-```
-
-## 📊 Model Architecture
-
-Our custom model is inspired by MediaPipe and consists of:
-
-1. **Hand Detection Network**: Locates hands in images using MobileNetV2 backbone
-2. **Landmark Prediction Network**: Predicts 21 3D hand landmarks
-3. **Gesture Classification Network**: Classifies gestures from landmarks
-
-See [2-model-development/model_architecture.py](2-model-development/model_architecture.py) for details.
-
-## 🎯 Performance Targets
-
-- **Hand Detection**: mAP > 0.95
-- **Landmark Accuracy**: Mean error < 5 pixels
-- **Gesture Classification**: Accuracy > 95%
-- **Inference Speed**: > 30 FPS on CPU
-
-## 📖 Documentation
-
-Detailed documentation for each phase:
 - [Phase 1: Data Collection Guide](1-data-collection/README.md)
 - [Phase 2: Model Development Guide](2-model-development/README.md)
 - [Phase 3: Application Guide](3-application/README.md)
+- [Contributing Guide](CONTRIBUTING.md)
 
-## 🤝 Use Cases
+## Testing
 
-Beyond Spotify control, this model can be applied to:
-- Gesture-based presentation control
+Chạy tests để verify implementation:
+
+```bash
+# Chạy tất cả tests
+pytest tests/
+
+# Chạy specific test file
+pytest tests/test_hand_detector.py
+pytest tests/test_spotify_controller.py
+
+# Chạy với coverage report
+pytest --cov=. tests/
+```
+
+## Use Cases
+
+Ngoài Spotify control, mô hình này có thể ứng dụng cho:
+
+- Điều khiển presentations
 - Sign language recognition
-- Gaming control
+- Gaming controls
 - Smart home device control
 - Accessibility applications
+- Virtual reality interactions
+- Interactive art installations
+
+## Roadmap
+
+### Version 1.0 (Current)
+- [x] Project structure initialization
+- [x] Documentation framework
+- [ ] Data collection implementation
+- [ ] Model architecture implementation
+- [ ] Training pipeline
+- [ ] Spotify integration
+
+### Version 2.0 (Future)
+- [ ] Support multiple gesture sets
+- [ ] Multi-hand detection
+- [ ] Integration with other music services
+- [ ] Mobile application
+- [ ] Cloud deployment options
+- [ ] Pre-trained models
 
 ## Contributing
 
-Chúng tôi hoan nghênh mọi đóng góp! / We welcome all contributions!
+Chúng tôi hoan nghênh mọi đóng góp từ cộng đồng!
 
-### Bắt Đầu Nhanh / Quick Start
+### Getting Started
 
-1. **Fork** repository này
-2. **Clone** về máy của bạn
-3. Tạo **virtual environment** và cài đặt dependencies:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # macOS/Linux
-   pip install -r requirements.txt
-   ```
-4. Copy `config/config.example.py` sang `config/config.py` và cấu hình Spotify API
-5. Tạo **branch mới** cho feature của bạn
-6. Thực hiện thay đổi và **commit**
-7. **Push** lên fork của bạn
-8. Tạo **Pull Request**
+1. Fork repository này trên GitHub
+2. Clone về máy local
+3. Tạo branch mới cho feature/fix của bạn
+4. Commit changes với clear messages
+5. Push lên fork của bạn
+6. Tạo Pull Request
 
-### Hướng Dẫn Chi Tiết / Detailed Guide
+### Guidelines
 
-Đọc hướng dẫn đầy đủ tại [CONTRIBUTING.md](CONTRIBUTING.md) để biết:
-- Quy trình phát triển chi tiết
-- Code style guidelines
-- Cách viết tests
-- Quy ước commit messages
-- Cách đồng bộ với repository gốc
+- Đọc [CONTRIBUTING.md](CONTRIBUTING.md) để biết quy trình chi tiết
+- Tuân thủ [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 
-### Ý Tưởng Đóng Góp / Contribution Ideas
+### Areas to Contribute
 
-- 🎯 Thêm gestures mới
-- 🐛 Sửa bugs trong Issues
-- 📖 Cải thiện documentation
-- ✅ Viết thêm tests
-- ⚡ Cải thiện performance
+- Implement data collection scripts
+- Develop model architecture
+- Add unit tests
+- Improve documentation
+- Report bugs
+- Suggest features
 
 ## License
 
-MIT License
+MIT License - Xem file LICENSE để biết chi tiết
 
 ## Acknowledgments
 
-- [MediaPipe](https://mediapipe.dev/) for hand detection
-- [Spotipy](https://spotipy.readthedocs.io/) for Spotify API integration
+- Inspired by MediaPipe hand tracking
+- Spotify Web API
+- Open source computer vision community
+
+## Contact và Support
+
+- Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/spotify-hand-controller-built-mediapipe-model/issues)
+- Discussions: [GitHub Discussions](https://github.com/YOUR_USERNAME/spotify-hand-controller-built-mediapipe-model/discussions)
+- Documentation: [docs/](docs/)
+
+## Project Status
+
+**Status**: In Development
+
+Dự án đang trong giai đoạn phát triển. Cấu trúc và documentation đã được setup. Implementation code sẽ được bổ sung trong các phase tiếp theo.
+
+---
+
+**Lưu ý**: Đây là project framework. Code implementation sẽ được phát triển theo từng phase dựa trên nhu cầu nghiên cứu và phát triển cụ thể.

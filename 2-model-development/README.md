@@ -1,95 +1,153 @@
-# Model Development Phase
+# Phase 2: Model Development
 
-## Overview
-This phase involves building and training a custom hand detection and gesture recognition model, similar to MediaPipe's hand tracking functionality.
+## Mục đích
+Giai đoạn này tập trung vào việc thiết kế, xây dựng và huấn luyện mô hình machine learning để nhận diện cử chỉ tay. Mô hình sẽ được phát triển tương tự như kiến trúc của MediaPipe.
 
-## Model Architecture
+## Thành phần chính
 
-Our model consists of two main components:
+### 1. Kiến trúc mô hình
+Mô hình bao gồm các thành phần sau:
 
-### 1. Hand Detection Model
-- Detects the presence and location of hands in an image
-- Outputs bounding box coordinates for each detected hand
+#### Hand Detection Network
+- Phát hiện vị trí bàn tay trong ảnh
+- Xác định bounding box của bàn tay
+- Backbone: MobileNet hoặc các CNN architecture tương tự
 
-### 2. Hand Landmark Model
-- Takes the detected hand region as input
-- Predicts 21 3D hand landmarks
-- Outputs gesture classification
+#### Hand Landmark Network
+- Dự đoán 21 điểm mốc 3D trên bàn tay
+- Input: Vùng ảnh chứa bàn tay đã được crop
+- Output: Tọa độ (x, y, z) của 21 landmarks
 
-## Files
+#### Gesture Classification Network
+- Phân loại cử chỉ dựa trên landmarks
+- Input: Vector 63 chiều (21 landmarks × 3 coordinates)
+- Output: Xác suất cho từng gesture class
 
-- **model_architecture.py**: Defines the neural network architecture
-- **train.py**: Training script for the model
-- **evaluate.py**: Evaluation and testing script
-- **data_preprocessing.py**: Data preprocessing and augmentation utilities
-- **utils.py**: Training utilities (loss functions, metrics, etc.)
+### 2. Tiền xử lý dữ liệu
+- Chuẩn hóa kích thước ảnh
+- Data augmentation (rotation, flip, brightness, contrast)
+- Tạo train/validation/test splits
+- Normalization và feature scaling
 
-## Training the Model
+### 3. Quá trình huấn luyện
+- Thiết lập hyperparameters (learning rate, batch size, epochs)
+- Training loop với checkpointing
+- Validation sau mỗi epoch
+- Early stopping để tránh overfitting
+- Learning rate scheduling
 
-### 1. Prepare the Data
-Ensure you have completed the data collection phase and have annotated data in `../data/annotations/`.
+### 4. Đánh giá mô hình
+- Metrics: Accuracy, Precision, Recall, F1-Score
+- Confusion matrix để phân tích lỗi
+- Landmark position error (mean/median distance)
+- Inference time và FPS
+- ROC curves và AUC scores
 
-### 2. Preprocess the Data
-```bash
-python data_preprocessing.py
+## Cấu trúc thư mục
+
+```
+2-model-development/
+├── train.py              # Script huấn luyện mô hình
+├── evaluate.py           # Script đánh giá performance
+├── utils.py             # Utility functions (loss, metrics, etc.)
+└── README.md            # File này
+
+models/
+├── checkpoints/         # Lưu trữ checkpoints trong quá trình train
+│   └── logs/           # TensorBoard logs
+└── saved_models/       # Mô hình đã train xong
+    └── best_model.h5   # Best model theo validation metric
 ```
 
-This will:
-- Load annotated data
-- Apply data augmentation
-- Split into train/validation/test sets
-- Save processed data to `../data/processed/`
+## Quy trình phát triển
 
-### 3. Train the Model
-```bash
-python train.py --epochs 100 --batch-size 32 --learning-rate 0.001
-```
+### Bước 1: Thiết kế kiến trúc
+- Nghiên cứu các kiến trúc hiện có (MediaPipe, OpenPose)
+- Xác định input/output dimensions
+- Thiết kế network layers
+- Tính toán số lượng parameters
 
-Training arguments:
-- `--epochs`: Number of training epochs (default: 100)
-- `--batch-size`: Batch size for training (default: 32)
-- `--learning-rate`: Learning rate (default: 0.001)
-- `--checkpoint-dir`: Directory to save checkpoints (default: ../models/checkpoints)
-- `--resume`: Resume from a checkpoint
+### Bước 2: Tiền xử lý dữ liệu
+- Load dữ liệu từ Phase 1
+- Implement data pipeline
+- Apply augmentation techniques
+- Create DataLoader/Generator
 
-### 4. Evaluate the Model
-```bash
-python evaluate.py --model-path ../models/saved_models/best_model.h5
-```
+### Bước 3: Training
+- Initialize model với pretrained weights (transfer learning)
+- Setup optimizer và loss functions
+- Configure callbacks (checkpoint, early stopping)
+- Monitor training metrics
 
-This will:
-- Load the trained model
-- Run evaluation on test set
-- Generate performance metrics (accuracy, precision, recall, F1)
-- Create confusion matrix
-- Save results to evaluation report
+### Bước 4: Evaluation
+- Test trên test set
+- Phân tích errors
+- Visualize predictions
+- Generate evaluation reports
 
-## Model Performance Targets
+### Bước 5: Optimization
+- Model compression (pruning, quantization)
+- Export sang các format (TensorFlow Lite, ONNX)
+- Optimize cho inference speed
+- Test trên target hardware
 
-- **Hand Detection**: mAP > 0.95
-- **Landmark Prediction**: Mean error < 5 pixels
-- **Gesture Classification**: Accuracy > 95%
-- **Inference Speed**: > 30 FPS on CPU
+## Chỉ số performance mục tiêu
 
-## Monitoring Training
+### Accuracy Targets
+- Hand Detection: mAP > 0.95
+- Landmark Prediction: Mean pixel error < 5px
+- Gesture Classification: Accuracy > 95%
 
-Training metrics are logged and can be visualized using TensorBoard:
-```bash
-tensorboard --logdir ../models/checkpoints/logs
-```
+### Speed Targets
+- Inference time: < 33ms (30 FPS)
+- Model size: < 50MB
+- RAM usage: < 200MB
 
-## Model Export
+### Robustness
+- Hoạt động tốt trong nhiều điều kiện ánh sáng
+- Ổn định với các góc nhìn khác nhau
+- Xử lý được nhiều kích thước tay
 
-After training, export the model for deployment:
-```bash
-python export_model.py --model-path ../models/saved_models/best_model.h5 --output-format tflite
-```
+## Tools và frameworks
 
-Supported formats:
-- TensorFlow SavedModel
-- TensorFlow Lite (.tflite)
-- ONNX (.onnx)
+### Deep Learning Frameworks
+- TensorFlow / Keras
+- PyTorch
+- ONNX Runtime
 
-## Next Steps
+### Visualization Tools
+- TensorBoard cho training metrics
+- Matplotlib/Seaborn cho plots
+- Confusion matrix visualization
 
-After training and evaluating your model, proceed to the **3-application** phase to integrate it into the Spotify controller application.
+### Experiment Tracking
+- Weights & Biases
+- MLflow
+- TensorBoard
+
+## Best practices
+
+### Training
+- Sử dụng version control cho code và configs
+- Log tất cả hyperparameters
+- Save checkpoints regularly
+- Monitor overfitting
+
+### Evaluation
+- Sử dụng nhiều metrics khác nhau
+- Test trên diverse test set
+- Phân tích failure cases
+- Compare với baseline models
+
+### Documentation
+- Document kiến trúc model rõ ràng
+- Ghi chú các quyết định thiết kế
+- Version models theo semantic versioning
+- Lưu training logs và results
+
+## Lưu ý quan trọng
+
+- Không commit model files (*.h5, *.pt) lên Git
+- Sử dụng GPU để training nhanh hơn
+- Backup checkpoints thường xuyên
+- Test model trên real-world data trước khi deploy

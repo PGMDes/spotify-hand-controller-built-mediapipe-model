@@ -1,54 +1,74 @@
-# Data Collection Phase
+# Phase 1: Data Collection
 
-## Overview
-This phase involves collecting hand gesture data to train our custom hand detection model (similar to MediaPipe).
+## Mục đích
+Giai đoạn này tập trung vào việc thu thập và chuẩn bị dữ liệu để huấn luyện mô hình nhận diện cử chỉ tay. Đây là bước đầu tiên và quan trọng nhất trong quy trình machine learning.
 
-## Steps
+## Nhiệm vụ chính
 
-### 1. Setup Data Collection Environment
-Ensure you have the required dependencies installed:
-```bash
-pip install opencv-python mediapipe numpy
+### 1. Thu thập dữ liệu thô
+- Sử dụng webcam để ghi lại các cử chỉ tay khác nhau
+- Lưu trữ dữ liệu dạng ảnh hoặc video vào thư mục `../data/raw/`
+- Đảm bảo đa dạng về điều kiện ánh sáng, góc nhìn, và đối tượng
+
+### 2. Gán nhãn và chú thích dữ liệu
+- Xác định các điểm mốc (landmarks) trên bàn tay
+- Gán nhãn cho từng cử chỉ (gesture classes)
+- Lưu trữ thông tin chú thích vào `../data/annotations/`
+
+### 3. Kiểm tra chất lượng dữ liệu
+- Xác minh tính đầy đủ của dataset
+- Loại bỏ dữ liệu nhiễu hoặc không hợp lệ
+- Đảm bảo cân bằng giữa các classes
+
+## Cấu trúc dữ liệu
+
+```
+data/
+├── raw/                    # Dữ liệu thô chưa xử lý
+│   ├── gesture_1/         # Ảnh cho cử chỉ 1
+│   ├── gesture_2/         # Ảnh cho cử chỉ 2
+│   └── ...
+├── annotations/           # File chú thích landmarks và labels
+│   ├── gesture_1.json
+│   ├── gesture_2.json
+│   └── ...
+└── processed/            # Dữ liệu đã được tiền xử lý
 ```
 
-### 2. Collect Raw Data
-Run the data collection script to capture hand gestures:
-```bash
-python collect_data.py
-```
+## Nguồn dữ liệu
 
-This script will:
-- Open your webcam
-- Allow you to record different hand gestures
-- Save images/videos to `../data/raw/`
+### Thu thập tự động
+- Sử dụng camera để ghi lại cử chỉ của người dùng
+- Tự động chụp ảnh theo khoảng thời gian định trước
+- Lưu trữ metadata (timestamp, điều kiện chụp)
 
-### 3. Annotate Data
-After collecting raw data, annotate the hand landmarks:
-```bash
-python annotate_data.py
-```
+### Dataset từ nguồn bên ngoài
+- Sử dụng dataset công khai từ Kaggle hoặc các nguồn khác
+- Tham khảo `../data/kaggle_data_link.md` để biết thêm chi tiết
+- Đảm bảo tuân thủ license và điều khoản sử dụng
 
-This will:
-- Load raw images/videos
-- Extract hand landmarks
-- Save annotations to `../data/annotations/`
+## Yêu cầu về dữ liệu
 
-### 4. Validate Dataset
-Check the collected dataset quality:
-```bash
-python validate_dataset.py
-```
+### Chất lượng
+- Độ phân giải tối thiểu: 640x480 pixels
+- Format: JPG, PNG hoặc video MP4
+- Ánh sáng đầy đủ, bàn tay nằm trong khung hình
+- Tránh nhiễu hoặc che khuất
 
-## Dataset Format
-- **Raw data**: Images or videos in `../data/raw/`
-- **Annotations**: JSON files with hand landmark coordinates in `../data/annotations/`
-- **Processed**: Cleaned and augmented data in `../data/processed/`
+### Số lượng
+- Tối thiểu 500 mẫu cho mỗi cử chỉ
+- Khuyến nghị 1000+ mẫu để đạt độ chính xác cao
+- Đa dạng về người thực hiện và điều kiện
 
-## External Datasets
-You can also use external datasets from Kaggle. See `../data/kaggle_data_link.md` for more information.
+### Đa dạng
+- Nhiều góc nhìn khác nhau (chính diện, nghiêng, từ trên xuống)
+- Các điều kiện ánh sáng khác nhau (sáng mạnh, yếu, tự nhiên)
+- Nhiều người khác nhau (kích thước tay, màu da khác nhau)
+- Các background khác nhau
 
-## Tips
-- Collect data with various lighting conditions
-- Include different hand sizes and skin tones
-- Record gestures from multiple angles
-- Aim for at least 1000+ images per gesture class
+## Lưu ý quan trọng
+
+- Đảm bảo tuân thủ quyền riêng tư khi thu thập dữ liệu
+- Lưu trữ dữ liệu an toàn và có backup
+- Document rõ ràng cách thức thu thập và tiêu chí
+- Không commit dữ liệu lớn lên Git repository
