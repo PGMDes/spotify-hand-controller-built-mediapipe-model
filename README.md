@@ -115,10 +115,40 @@ You can customize these mappings in `src/gesture_mapping.py`.
 
 ## Contributing
 
-1. Create a new branch for your feature
-2. Make your changes
-3. Write tests
-4. Submit a pull request
+Chúng tôi hoan nghênh mọi đóng góp! / We welcome all contributions!
+
+### Bắt Đầu Nhanh / Quick Start
+
+1. **Fork** repository này
+2. **Clone** về máy của bạn
+3. Tạo **virtual environment** và cài đặt dependencies:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # macOS/Linux
+   pip install -r requirements.txt
+   ```
+4. Copy `config/config.example.py` sang `config/config.py` và cấu hình Spotify API
+5. Tạo **branch mới** cho feature của bạn
+6. Thực hiện thay đổi và **commit**
+7. **Push** lên fork của bạn
+8. Tạo **Pull Request**
+
+### Hướng Dẫn Chi Tiết / Detailed Guide
+
+Đọc hướng dẫn đầy đủ tại [CONTRIBUTING.md](CONTRIBUTING.md) để biết:
+- Quy trình phát triển chi tiết
+- Code style guidelines
+- Cách viết tests
+- Quy ước commit messages
+- Cách đồng bộ với repository gốc
+
+### Ý Tưởng Đóng Góp / Contribution Ideas
+
+- 🎯 Thêm gestures mới
+- 🐛 Sửa bugs trong Issues
+- 📖 Cải thiện documentation
+- ✅ Viết thêm tests
+- ⚡ Cải thiện performance
 
 ## License
 
