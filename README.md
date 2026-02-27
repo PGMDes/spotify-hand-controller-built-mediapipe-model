@@ -1,117 +1,238 @@
-# Spotify Hand Controller with MediaPipe
+# Hand Gesture Recognition Model
 
-Control Spotify playback using hand gestures detected by MediaPipe.
+A complete machine learning pipeline for building a custom hand detection and gesture recognition model (similar to MediaPipe) and applying it to control Spotify playback.
 
-## Project Structure
+## 🎯 Project Goals
+
+This project demonstrates the full ML workflow:
+1. **Data Collection**: Gather hand gesture data from webcam
+2. **Model Development**: Build and train a custom hand detection model
+3. **Model Training**: Train the model on collected data
+4. **Application**: Deploy the model in a real-world application (Spotify controller)
+
+## 📁 Project Structure
 
 ```
-spotify-hand-controller-built-mediapipe-model/
+hand-gesture-model/
 │
-├── data/                      # Data for model training
-│   ├── raw/                  # Raw dataset files
-│   ├── processed/            # Processed/cleaned datasets
-│   └── annotations/          # Labeled data and annotations
+├── 1-data-collection/         # Phase 1: Data Collection
+│   ├── collect_data.py       # Collect hand gesture images
+│   ├── annotate_data.py      # Annotate data with landmarks
+│   └── README.md             # Data collection guide
 │
-├── notebooks/                 # Jupyter notebooks for experimentation
+├── data/                      # Dataset storage
+│   ├── raw/                  # Raw collected images
+│   ├── processed/            # Preprocessed data ready for training
+│   ├── annotations/          # Annotated landmark data
+│   └── kaggle_data_link.md   # External dataset links
 │
-├── models/                    # Model files
-│   ├── saved_models/         # Trained models
+├── 2-model-development/       # Phase 2: Model Building & Training
+│   ├── model_architecture.py # Neural network architecture
+│   ├── train.py              # Model training script
+│   ├── evaluate.py           # Model evaluation script
+│   ├── data_preprocessing.py # Data preprocessing utilities
+│   └── README.md             # Model development guide
+│
+├── models/                    # Trained models
+│   ├── saved_models/         # Final trained models
 │   └── checkpoints/          # Training checkpoints
 │
-├── training/                  # Training scripts
-│   ├── train.py             # Model training script
-│   ├── evaluate.py          # Model evaluation script
-│   └── utils.py             # Training utilities
-│
-├── src/                       # Application source code
-│   ├── main.py              # Main entry point
-│   ├── hand_detector.py     # Hand gesture detection
+├── 3-application/             # Phase 3: Real-world Application
+│   ├── main.py               # Main application entry point
+│   ├── hand_detector.py      # Hand detection using trained model
 │   ├── spotify_controller.py # Spotify API integration
-│   ├── gesture_mapping.py   # Gesture to action mapping
-│   └── utils.py             # Application utilities
+│   ├── gesture_mapping.py    # Gesture to action mapping
+│   ├── utils.py              # Application utilities
+│   └── README.md             # Application usage guide
+│
+├── notebooks/                 # Jupyter notebooks for experimentation
 │
 ├── tests/                     # Unit tests
 │   ├── test_hand_detector.py
 │   └── test_spotify_controller.py
 │
 ├── config/                    # Configuration files
-│   ├── config.py            # Main configuration
-│   └── config.example.py    # Example configuration
+│   ├── config.py             # Main configuration
+│   └── config.example.py     # Example configuration
 │
 ├── assets/                    # Images, icons, and other assets
 │
-├── docs/                      # Documentation
+├── docs/                      # Additional documentation
 │
 ├── requirements.txt           # Python dependencies
-├── .gitignore                # Git ignore rules
 └── README.md                 # This file
 ```
 
-## Setup Instructions
+## 🚀 Quick Start
 
-### 1. Install Dependencies
+### Phase 1: Data Collection
+```bash
+cd 1-data-collection
+python collect_data.py      # Collect hand gesture images
+python annotate_data.py     # Annotate with landmarks
+```
 
+### Phase 2: Model Development
+```bash
+cd 2-model-development
+python data_preprocessing.py   # Preprocess data
+python train.py               # Train the model
+python evaluate.py            # Evaluate performance
+```
+
+### Phase 3: Application
+```bash
+cd 3-application
+python main.py               # Run Spotify controller
+```
+
+See individual README files in each phase directory for detailed instructions.
+
+## 📋 Prerequisites
+
+- Python 3.8+
+- Webcam for data collection and real-time detection
+- Spotify Premium account (for Phase 3 application)
+- GPU recommended for faster training (optional)
+
+## 🔧 Installation
+
+1. **Clone the repository**
+```bash
+git clone <repository-url>
+cd spotify-hand-controller-built-mediapipe-model
+```
+
+2. **Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Spotify API
-
-1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
-2. Create a new app and get your credentials
-3. Copy `config/config.example.py` to `config/config.py`
-4. Fill in your Spotify API credentials
-
-### 3. Prepare Data (for model training)
-
-Place your training data in the `data/raw/` directory.
-
-### 4. Train Model (Optional)
-
-If you want to train a custom model:
-
+3. **Configure Spotify API** (for Phase 3)
 ```bash
-python training/train.py
+cp config/config.example.py config/config.py
+# Edit config/config.py with your Spotify API credentials
 ```
 
-### 5. Run Application
+Get Spotify API credentials:
+- Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard)
+- Create a new app
+- Copy Client ID and Client Secret to config.py
+
+## 📚 Complete Workflow
+
+### Phase 1: Data Collection
+Collect your own hand gesture dataset:
 
 ```bash
-python src/main.py
+cd 1-data-collection
+
+# Step 1: Collect images
+python collect_data.py
+# Follow on-screen instructions to record gestures
+
+# Step 2: Annotate landmarks
+python annotate_data.py
+# Extracts hand landmarks using MediaPipe
 ```
 
-## Gesture Mappings
+**Output**: Annotated data in `data/annotations/`
 
-- **Thumbs Up**: Play
-- **Thumbs Down**: Pause
-- **Swipe Right**: Next Track
-- **Swipe Left**: Previous Track
-- **Open Palm**: Volume Up
-- **Closed Fist**: Volume Down
+### Phase 2: Model Development & Training
+Build and train your custom model:
 
-You can customize these mappings in `src/gesture_mapping.py`.
+```bash
+cd 2-model-development
 
-## Development Workflow
+# Step 1: Preprocess data
+python data_preprocessing.py
+# Creates train/val/test splits with augmentation
 
-### Model Development
+# Step 2: Train model
+python train.py --epochs 100 --batch-size 32
 
-1. Collect and prepare data in `data/raw/`
-2. Experiment in Jupyter notebooks (`notebooks/`)
-3. Write training scripts in `training/`
-4. Save trained models to `models/saved_models/`
+# Step 3: Evaluate model
+python evaluate.py --model-path ../models/saved_models/best_model.h5
+```
 
-### Application Development
+**Output**: Trained model in `models/saved_models/`
 
-1. Implement features in `src/`
-2. Write tests in `tests/`
-3. Update documentation in `docs/`
-4. Test with `pytest tests/`
+### Phase 3: Application (Spotify Controller)
+Use your trained model to control Spotify:
 
-## Requirements
+```bash
+cd 3-application
 
-- Python 3.8+
-- Webcam
-- Spotify Premium account (for full playback control)
+# Run the application
+python main.py --model-path ../models/saved_models/best_model.h5
+```
+
+**Default Gesture Mappings**:
+- 🖐️ **Open Palm**: Play/Pause
+- ✊ **Fist**: Stop
+- 👍 **Thumbs Up**: Volume Up
+- ✌️ **Peace Sign**: Next Track
+- 👈 **Pointing**: Previous Track
+- ← **Swipe Left**: Seek Backward
+- → **Swipe Right**: Seek Forward
+
+Customize mappings in [3-application/gesture_mapping.py](3-application/gesture_mapping.py)
+
+## 🎓 Learning Path
+
+This project is designed to teach the complete ML pipeline:
+
+1. **Data Engineering**: Learn data collection, annotation, and preprocessing
+2. **Model Architecture**: Understand CNN architectures for computer vision
+3. **Training Pipeline**: Implement training loops, checkpointing, and evaluation
+4. **Model Deployment**: Deploy ML models in real-time applications
+5. **API Integration**: Integrate with external APIs (Spotify)
+
+## 🧪 Testing
+
+Run tests to verify components:
+
+```bash
+# Test all components
+pytest tests/
+
+# Test specific component
+pytest tests/test_hand_detector.py
+pytest tests/test_spotify_controller.py
+```
+
+## 📊 Model Architecture
+
+Our custom model is inspired by MediaPipe and consists of:
+
+1. **Hand Detection Network**: Locates hands in images using MobileNetV2 backbone
+2. **Landmark Prediction Network**: Predicts 21 3D hand landmarks
+3. **Gesture Classification Network**: Classifies gestures from landmarks
+
+See [2-model-development/model_architecture.py](2-model-development/model_architecture.py) for details.
+
+## 🎯 Performance Targets
+
+- **Hand Detection**: mAP > 0.95
+- **Landmark Accuracy**: Mean error < 5 pixels
+- **Gesture Classification**: Accuracy > 95%
+- **Inference Speed**: > 30 FPS on CPU
+
+## 📖 Documentation
+
+Detailed documentation for each phase:
+- [Phase 1: Data Collection Guide](1-data-collection/README.md)
+- [Phase 2: Model Development Guide](2-model-development/README.md)
+- [Phase 3: Application Guide](3-application/README.md)
+
+## 🤝 Use Cases
+
+Beyond Spotify control, this model can be applied to:
+- Gesture-based presentation control
+- Sign language recognition
+- Gaming control
+- Smart home device control
+- Accessibility applications
 
 ## Contributing
 
